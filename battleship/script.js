@@ -327,7 +327,7 @@ class Battleship {
             for (let col = 0; col < this.boardSize; col++) {
                 if (board[row][col] === 'ship') {
                     const cell = document.querySelector(
-                        `[data-row="${row}"][data-col="${col}"]`
+                        `.${board === this.computerBoard ? 'computer' : 'player'}-grid [data-row="${row}"][data-col="${col}"]`
                     );
                     if (!cell.classList.contains('hit')) {
                         return false;
