@@ -239,7 +239,15 @@ class Battleship {
         for (const [shipType, shipPositions] of positions) {
             const hitPosition = shipPositions.find(pos => pos.row === row && pos.col === col);
             if (hitPosition) {
-                // Check if all positions of this ship are hit
+                // Reveal all positions of the hit ship
+                shipPositions.forEach(pos => {
+                    const cell = document.querySelector(
+                        `.${isPlayer ? 'player' : 'computer'}-grid [data-row="${pos.row}"][data-col="${pos.col}"]`
+                    );
+                    cell.classList.add('hit');
+                });
+
+                // Check if all positions are hit to determine if sunk
                 const allPositionsHit = shipPositions.every(pos => {
                     const cell = document.querySelector(
                         `.${isPlayer ? 'player' : 'computer'}-grid [data-row="${pos.row}"][data-col="${pos.col}"]`
@@ -248,7 +256,7 @@ class Battleship {
                 });
 
                 if (allPositionsHit) {
-                    // Reveal the entire ship
+                    // Add sunk styling to the entire ship
                     shipPositions.forEach(pos => {
                         const cell = document.querySelector(
                             `.${isPlayer ? 'player' : 'computer'}-grid [data-row="${pos.row}"][data-col="${pos.col}"]`
@@ -257,6 +265,7 @@ class Battleship {
                     });
                     return true;
                 }
+                return false;
             }
         }
         return false;
@@ -270,8 +279,6 @@ class Battleship {
         const col = parseInt(event.target.dataset.col);
         
         const isHit = this.computerBoard[row][col] === 'ship';
-        event.target.classList.add(isHit ? 'hit' : 'miss');
-        
         if (isHit) {
             const isSunk = this.checkShipSunk(row, col, this.computerBoard, false);
             this.displayMessage(isSunk ? "Ship sunk!" : "Hit!");
@@ -280,6 +287,7 @@ class Battleship {
                 return;
             }
         } else {
+            event.target.classList.add('miss');
             this.displayMessage("Miss!");
         }
         
@@ -301,8 +309,6 @@ class Battleship {
         const cell = document.querySelector(`.player-grid [data-row="${row}"][data-col="${col}"]`);
         const isHit = this.playerBoard[row][col] === 'ship';
         
-        cell.classList.add(isHit ? 'hit' : 'miss');
-        
         if (isHit) {
             const isSunk = this.checkShipSunk(row, col, this.playerBoard, true);
             this.displayMessage(isSunk ? "Computer sunk your ship!" : "Computer hit your ship!");
@@ -311,6 +317,7 @@ class Battleship {
                 return;
             }
         } else {
+            cell.classList.add('miss');
             this.displayMessage("Computer missed!");
         }
     }
