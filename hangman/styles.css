@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.hangman-box {
+    background: #fff;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.word-display {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.word-display span {
+    width: 30px;
+    height: 40px;
+    border-bottom: 3px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
+.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.keyboard button {
+    padding: 10px;
+    font-size: 1rem;
+    background: #e1e1e1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 35px;
+}
+
+.keyboard button:hover {
+    background: #d1d1d1;
+}
+
+.keyboard button.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.game-message {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    color: #333;
+}
+
+#newGameButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#newGameButton:hover {
+    background: #45a049;
+} 

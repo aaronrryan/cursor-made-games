@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Battleship</h1>
+        <div class="game-container">
+            <div class="boards">
+                <div class="player-board">
+                    <h2>Your Board</h2>
+                    <div class="grid player-grid"></div>
+                </div>
+                <div class="computer-board">
+                    <h2>Computer's Board</h2>
+                    <div class="grid computer-grid"></div>
+                </div>
+            </div>
+            <div class="game-info">
+                <div class="message"></div>
+                <button id="startGame">Start New Game</button>
+                <div class="ships-container">
+                    <h3>Place Your Ships:</h3>
+                    <div class="ship-selection">
+                        <button class="ship-button" data-ship="carrier" data-length="5">Carrier (5)</button>
+                        <button class="ship-button" data-ship="battleship" data-length="4">Battleship (4)</button>
+                        <button class="ship-button" data-ship="cruiser" data-length="3">Cruiser (3)</button>
+                        <button class="ship-button" data-ship="submarine" data-length="3">Submarine (3)</button>
+                        <button class="ship-button" data-ship="destroyer" data-length="2">Destroyer (2)</button>
+                    </div>
+                    <button id="rotateShip">Rotate Ship</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
