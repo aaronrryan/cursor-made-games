@@ -16,6 +16,10 @@ class Battleship {
         this.isHorizontal = true;
         this.gameStarted = false;
         
+        // Add new properties to track ship positions
+        this.playerShipPositions = new Map();
+        this.computerShipPositions = new Map();
+        
         this.initializeGame();
     }
 
@@ -158,6 +162,26 @@ class Battleship {
         return cells;
     }
 
+    placeShip(row, col, length, horizontal, board, isPlayer = false) {
+        const positions = [];
+        for (let i = 0; i < length; i++) {
+            if (horizontal) {
+                board[row][col + i] = 'ship';
+                positions.push({row: row, col: col + i});
+            } else {
+                board[row + i][col] = 'ship';
+                positions.push({row: row + i, col: col});
+            }
+        }
+
+        // Store ship positions
+        if (isPlayer) {
+            this.playerShipPositions.set(this.currentShip.type, positions);
+        } else {
+            this.computerShipPositions.set(Object.keys(this.ships)[this.computerShips.size], positions);
+        }
+    }
+
     placePlayerShip(event) {
         if (!event.target.classList.contains('cell')) return;
         
@@ -165,7 +189,7 @@ class Battleship {
         const col = parseInt(event.target.dataset.col);
         
         if (this.canPlaceShip(row, col, this.currentShip.length, this.isHorizontal, this.playerBoard)) {
-            this.placeShip(row, col, this.currentShip.length, this.isHorizontal, this.playerBoard);
+            this.placeShip(row, col, this.currentShip.length, this.isHorizontal, this.playerBoard, true);
             this.getShipCells(row, col, this.currentShip.length, this.isHorizontal, 'player')
                 .forEach(cell => cell.classList.add('ship'));
             
@@ -178,16 +202,6 @@ class Battleship {
             
             if (this.playerShips.size === 5) {
                 this.displayMessage("All ships placed! Click 'Start New Game' to begin!");
-            }
-        }
-    }
-
-    placeShip(row, col, length, horizontal, board) {
-        for (let i = 0; i < length; i++) {
-            if (horizontal) {
-                board[row][col + i] = 'ship';
-            } else {
-                board[row + i][col] = 'ship';
             }
         }
     }
@@ -211,12 +225,41 @@ class Battleship {
                 const horizontal = Math.random() < 0.5;
                 
                 if (this.canPlaceShip(row, col, length, horizontal, this.computerBoard)) {
-                    this.placeShip(row, col, length, horizontal, this.computerBoard);
+                    this.placeShip(row, col, length, horizontal, this.computerBoard, false);
                     this.computerShips.add(shipType);
                     placed = true;
                 }
             }
         }
+    }
+
+    checkShipSunk(row, col, board, isPlayer) {
+        const positions = isPlayer ? this.playerShipPositions : this.computerShipPositions;
+        
+        for (const [shipType, shipPositions] of positions) {
+            const hitPosition = shipPositions.find(pos => pos.row === row && pos.col === col);
+            if (hitPosition) {
+                // Check if all positions of this ship are hit
+                const allPositionsHit = shipPositions.every(pos => {
+                    const cell = document.querySelector(
+                        `.${isPlayer ? 'player' : 'computer'}-grid [data-row="${pos.row}"][data-col="${pos.col}"]`
+                    );
+                    return cell.classList.contains('hit');
+                });
+
+                if (allPositionsHit) {
+                    // Reveal the entire ship
+                    shipPositions.forEach(pos => {
+                        const cell = document.querySelector(
+                            `.${isPlayer ? 'player' : 'computer'}-grid [data-row="${pos.row}"][data-col="${pos.col}"]`
+                        );
+                        cell.classList.add('sunk');
+                    });
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     playerMove(event) {
@@ -230,7 +273,8 @@ class Battleship {
         event.target.classList.add(isHit ? 'hit' : 'miss');
         
         if (isHit) {
-            this.displayMessage("Hit!");
+            const isSunk = this.checkShipSunk(row, col, this.computerBoard, false);
+            this.displayMessage(isSunk ? "Ship sunk!" : "Hit!");
             if (this.checkWin(this.computerBoard)) {
                 this.endGame('player');
                 return;
@@ -260,7 +304,8 @@ class Battleship {
         cell.classList.add(isHit ? 'hit' : 'miss');
         
         if (isHit) {
-            this.displayMessage("Computer hit your ship!");
+            const isSunk = this.checkShipSunk(row, col, this.playerBoard, true);
+            this.displayMessage(isSunk ? "Computer sunk your ship!" : "Computer hit your ship!");
             if (this.checkWin(this.playerBoard)) {
                 this.endGame('computer');
                 return;

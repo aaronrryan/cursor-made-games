@@ -127,4 +127,9 @@ button:disabled {
 
 .ship-button.placed {
     background-color: #7f8c8d;
+}
+
+.sunk {
+    background-color: #c0392b !important;
+    border: 2px solid #e74c3c;
 } 

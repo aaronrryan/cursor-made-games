@@ -4,6 +4,16 @@ A collection of classic browser-based games built with HTML, CSS, and JavaScript
 
 ## Games Included
 
+### Battleship
+A strategic guessing game where players try to sink their opponent's fleet of ships. Play against a computer opponent that randomly places its ships and attacks.
+
+Features:
+- Interactive ship placement with rotation
+- Visual feedback for hits, misses, and sunk ships
+- Computer opponent with random strategy
+- Ships include: Carrier (5), Battleship (4), Cruiser (3), Submarine (3), and Destroyer (2)
+- Real-time game messages and status updates
+
 ### Hangman
 A word-guessing game where players try to figure out a hidden word by suggesting letters. Players have limited attempts before the hangman is complete.
 
